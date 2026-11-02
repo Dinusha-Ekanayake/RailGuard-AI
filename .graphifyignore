@@ -1,0 +1,11 @@
+datasets/
+mlruns/
+mlartifacts/
+.venv/
+node_modules/
+*.csv
+*.parquet
+*.pkl
+*.joblib
+docs/*.docx
+docs/*.pdf

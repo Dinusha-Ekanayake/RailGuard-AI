@@ -1,0 +1,67 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "railguard"
+version = "0.1.0"
+description = "RailGuard AI: railway safety intelligence, predictive maintenance and simulated conflict monitoring (research prototype)."
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+license = { text = "MIT" }
+authors = [{ name = "Dinusha Ekanayake" }]
+# Phase-specific deps (FastAPI, SQLAlchemy, MLflow, ...) are added when their phase begins.
+dependencies = [
+    "pandas>=2.2",
+    "numpy>=1.26",
+    "scipy>=1.13",
+    "scikit-learn>=1.5",
+    "pyarrow>=16",
+    "pydantic>=2.7",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8",
+    "pytest-cov>=5",
+    "ruff>=0.6",
+    "mypy>=1.10",
+    "pre-commit>=3.7",
+]
+analysis = [
+    "matplotlib>=3.9",
+    "seaborn>=0.13",
+    "jupyterlab>=4.2",
+    "ucimlrepo>=0.0.7",
+    "xgboost>=2.1",
+    "shap>=0.46",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers"
+markers = ["slow: needs real datasets in datasets/raw (skipped in CI)"]
+
+[tool.coverage.run]
+source = ["railguard"]
+branch = true
+
+[tool.coverage.report]
+fail_under = 80
+show_missing = true
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM", "N"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+packages = ["railguard"]
+mypy_path = "src"
