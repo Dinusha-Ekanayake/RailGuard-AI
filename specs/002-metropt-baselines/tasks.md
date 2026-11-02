@@ -8,7 +8,7 @@ TDD for every task: write the failing test, implement, refactor, then tick the b
 | T-002-02 | Synthetic-frame test helper (2 segments, 10 s, injected step change) in `tests/` | helper returns the expected shape and gap | low | [x] |
 | T-002-03 | `features/windows.window_features`: analogue stats, digital duty cycle and transitions, 60 s grid | values match hand-computed ones on a tiny frame; column naming | high | [x] |
 | T-002-04 | Leakage and gap guarantees in `window_features` | changing future rows leaves earlier features identical; no window spans a gap; low-coverage rows are dropped and logged | high | [x] |
-| T-002-05 | `evaluation/splits`: `assign_split`, `fit_mask` | half-open boundaries; failure and pre-event rows are excluded from fit | high | [ ] |
+| T-002-05 | `evaluation/splits`: `assign_split`, `fit_mask` | half-open boundaries; failure and pre-event rows are excluded from fit | high | [x] |
 | T-002-06 | `models/baselines.RobustZScore` | zero-MAD fallback to std; constant feature dropped and logged; outlier scores highest | low | [ ] |
 | T-002-07 | `models/baselines.IsolationForestScorer` | same seed gives identical scores; outlier scores higher than normal rows | low | [ ] |
 | T-002-08 | `evaluation/alerts.alert_episodes` | merge within the gap; split beyond it; no merge across segments; zero alerts | low | [ ] |
