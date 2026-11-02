@@ -11,6 +11,9 @@ Newest entry at the top. Each entry records what was done, the decisions made an
 
 **Decisions** (ADR-0001): lightweight in-repo SDD; main/dev plus feature/*; raw data gitignored with checksums; MIT licence; graph gitignored.
 
+- Pushed `main` and `dev`; CI green on both. Branch protection requires a PR and both CI checks; merged branches are auto-deleted.
+- Installed the Graphify git hooks; first graph has 121 nodes and 24 communities.
+
 **Next**
 - User to provide further project details.
 - Draft `specs/001-metropt-eda`.
