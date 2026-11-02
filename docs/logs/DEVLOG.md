@@ -2,6 +2,15 @@
 
 Newest entry at the top. Each entry records what was done, the decisions made and what comes next.
 
+## 2026-11-02: Spec 001 approved (MetroPT-3 EDA)
+**Done**
+- Profiled the real CSV: 1,516,948 rows at **10 s sampling** (UCI confirms 0.1 Hz), Feb to Sep 2020, 160 gaps longer than 1 h, no nulls or duplicates.
+- Verified online: MetroPT-3 is CC BY 4.0 with DOI 10.24432/C5VW3R. The paper DOI is `…9564181`; the master doc's `…9564201` is a typo. Zenodo is CC BY 4.0. FRA Form 54 is US Government Works.
+- Event 2's "Maintenance 30Apr" is unverifiable as published. Labels use only the window timestamps.
+- Wrote spec, plan and tasks for 001 on branch `feature/001-metropt-eda`. Installed the `analysis` extra.
+
+**Next:** T-001-01 to T-001-15 (implementation, on Sonnet).
+
 ## 2026-11-02: Phase 0 bootstrap
 **Done**
 - Read master doc v1.0 and confirmed local datasets A, B and C, with checksums recorded in the dataset register.
