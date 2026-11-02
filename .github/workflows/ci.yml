@@ -19,6 +19,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0 # full history so the attribution check sees every PR commit
       - name: Reject large files (>5 MB) and raw data
         run: |
           big=$(git ls-files -z | xargs -0 -I{} find "{}" -size +5M 2>/dev/null)
@@ -28,8 +30,11 @@ jobs:
       - name: Reject AI attribution in commit messages
         if: github.event_name == 'pull_request'
         run: |
-          git fetch --no-tags origin "${{ github.base_ref }}"
-          if git log --format=%B "origin/${{ github.base_ref }}..HEAD" | grep -iE 'co-authored-by:.*(claude|anthropic)|generated with claude'; then
+          range="origin/${{ github.base_ref }}..${{ github.event.pull_request.head.sha }}"
+          count=$(git rev-list --count "$range")
+          echo "Scanning $count commit(s) in $range"
+          if [ "$count" -eq 0 ]; then echo "No commits found in range"; exit 1; fi
+          if git log --format=%B "$range" | grep -iE 'co-authored-by:.*(claude|anthropic)|generated with claude'; then
             echo "AI attribution found in commit messages"; exit 1; fi
 
   test:
