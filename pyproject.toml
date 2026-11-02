@@ -18,6 +18,7 @@ dependencies = [
     "scikit-learn>=1.5",
     "pyarrow>=16",
     "pydantic>=2.7",
+    "pyyaml>=6",
 ]
 
 [project.optional-dependencies]
@@ -27,6 +28,8 @@ dev = [
     "ruff>=0.6",
     "mypy>=1.10",
     "pre-commit>=3.7",
+    "types-PyYAML>=6",
+    "pandas-stubs>=2.2",
 ]
 analysis = [
     "matplotlib>=3.9",
@@ -56,9 +59,13 @@ show_missing = true
 [tool.ruff]
 line-length = 100
 target-version = "py312"
+extend-exclude = ["notebooks"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP", "SIM", "N"]
+
+[tool.ruff.lint.per-file-ignores]
+"scripts/build_eda_notebook.py" = ["E501"]
 
 [tool.mypy]
 python_version = "3.12"
