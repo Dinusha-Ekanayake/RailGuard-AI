@@ -18,4 +18,4 @@ TDD for every task: write the failing test, implement, refactor, then tick the b
 | T-001-12 | Run the CLI on the real data; commit `docs/datasets/metropt3_quality.json` | file present; values match the spec findings | [x] |
 | T-001-13 | `notebooks/01_metropt3_eda.ipynb` (calls src only) | `jupyter nbconvert --execute` succeeds | [x] |
 | T-001-14 | ADR-0002; dataset card `docs/datasets/metropt3.md` | review against AC-06 | [x] |
-| T-001-15 | Close out: DEVLOG, CHANGELOG, code-reviewer agent, PR into dev | CI green | [ ] |
+| T-001-15 | Close out: DEVLOG, CHANGELOG, code-reviewer agent, PR into dev | CI green | [x] |

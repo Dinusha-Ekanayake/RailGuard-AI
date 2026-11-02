@@ -2,6 +2,16 @@
 
 Newest entry at the top. Each entry records what was done, the decisions made and what comes next.
 
+## 2026-11-02: Spec 002 approved (MetroPT-3 baselines)
+**Done**
+- PR #2 (spec 001) merged into dev; spec 001 marked Implemented.
+- Wrote and approved spec, plan and tasks for 002: E0 robust z-score and E1 Isolation Forest, event-level evaluation.
+- Added `docs/master-doc-errata.md` (sampling, windows, DOI, date span) and risks R10 to R12.
+
+**Decisions**: MLflow deferred to the Docker Compose phase; chronological split (fit Feb to 10 Apr, validation events 1 and 2, test events 3 and 4); alert budget of 1 per 24 operating hours; `Oil_level` checked by running with and without it.
+
+**Next:** T-002-01 to T-002-16 (implementation, on Sonnet). Ask the dataset authors about event 2's maintenance date and `Oil_level`.
+
 ## 2026-11-02: Spec 001 implemented (MetroPT-3 EDA)
 **Done**
 - T-001-01 to T-001-14: loader, validation, segments, labels, quality report, CLI, tests (25 passing, 98% coverage, ruff and mypy strict clean), notebook executed top to bottom, ADR-0002, dataset card.

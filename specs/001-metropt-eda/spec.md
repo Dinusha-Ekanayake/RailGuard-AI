@@ -1,6 +1,6 @@
 # Spec 001: MetroPT-3 acquisition, validation and EDA
 
-- **Status:** Approved (2026-11-02)
+- **Status:** Implemented (2026-11-02, PR #2)
 - **Master doc refs:** §5.1, §6.1, §6.2, §14 (Phase 1), §15
 - **Branch:** `feature/001-metropt-eda`
 
