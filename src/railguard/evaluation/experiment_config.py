@@ -47,6 +47,7 @@ class ExperimentConfig:
     stride: pd.Timedelta
     min_coverage: float
     variants: dict[str, tuple[str, ...]]
+    max_gap_s: float
     split: SplitConfig
     horizon: pd.Timedelta
     merge_gap: pd.Timedelta
@@ -72,6 +73,9 @@ class ExperimentConfig:
         budget = float(evaluation["budget_per_24h"])
         if budget < 0:
             raise ValueError("budget_per_24h must not be negative")
+        max_gap_s = float(raw["segmentation"]["max_gap_s"])
+        if max_gap_s < 0:
+            raise ValueError("max_gap_s must not be negative")
         split = SplitConfig(**{name: _range(raw["split"][name]) for name in SPLIT_NAMES})
         forest = raw["isolation_forest"]
         return cls(
@@ -80,6 +84,7 @@ class ExperimentConfig:
             stride=pd.Timedelta(features["stride"]),
             min_coverage=min_coverage,
             variants={k: tuple(v) for k, v in features["variants"].items()},
+            max_gap_s=max_gap_s,
             split=split,
             horizon=horizon,
             merge_gap=merge_gap,

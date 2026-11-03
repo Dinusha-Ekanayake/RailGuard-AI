@@ -22,6 +22,7 @@ def _raw() -> dict:  # type: ignore[type-arg]
             "validation": ["2020-04-10", "2020-06-01"],
             "test": ["2020-06-01", "2020-09-01"],
         },
+        "segmentation": {"max_gap_s": 60.0},
         "evaluation": {"horizon": "24h", "merge_gap": "10min", "budget_per_24h": 1.0},
         "seed": 42,
         "isolation_forest": {"n_estimators": 50, "max_samples": 128, "contamination": "auto"},
@@ -37,6 +38,7 @@ def test_repo_config_loads() -> None:
     assert cfg.variants["no_oil_level"] == ("Oil_level",)
     assert cfg.split.test == (pd.Timestamp("2020-06-01"), pd.Timestamp("2020-09-01"))
     assert cfg.budget_per_hour == pytest.approx(1 / 24)
+    assert cfg.max_gap_s == 60.0
 
 
 def test_adjacent_half_open_ranges_are_allowed() -> None:
@@ -83,4 +85,11 @@ def test_rejects_non_positive_sample_interval() -> None:
     raw = _raw()
     raw["features"]["sample_interval"] = "0s"
     with pytest.raises(ValueError, match="sample_interval"):
+        ExperimentConfig.from_dict(raw)
+
+
+def test_negative_max_gap_rejected() -> None:
+    raw = _raw()
+    raw["segmentation"]["max_gap_s"] = -1
+    with pytest.raises(ValueError, match="max_gap_s"):
         ExperimentConfig.from_dict(raw)

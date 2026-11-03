@@ -28,6 +28,7 @@ def _config() -> ExperimentConfig:
                 "validation": [f"{DAY} 00:40", f"{DAY} 02:00"],
                 "test": [f"{DAY} 02:00", f"{DAY} 03:00"],
             },
+            "segmentation": {"max_gap_s": 60.0},
             "evaluation": {"horizon": "30min", "merge_gap": "10min", "budget_per_24h": 24.0},
             "seed": 7,
             "isolation_forest": {"n_estimators": 20, "max_samples": 32, "contamination": "auto"},
@@ -109,6 +110,7 @@ def test_fit_rows_exclude_pre_event_rows() -> None:
     big = ExperimentConfig.from_dict(
         {
             **_raw(config),
+            "segmentation": {"max_gap_s": 60.0},
             "evaluation": {"horizon": "2h", "merge_gap": "10min", "budget_per_24h": 24.0},
         }
     )
@@ -144,6 +146,7 @@ def _raw(config: ExperimentConfig) -> dict:  # type: ignore[type-arg]
             "variants": {"all": [], "no_oil_level": ["Oil_level"]},
         },
         "split": ranges,
+        "segmentation": {"max_gap_s": 60.0},
         "evaluation": {"horizon": "30min", "merge_gap": "10min", "budget_per_24h": 24.0},
         "seed": 7,
         "isolation_forest": {"n_estimators": 20, "max_samples": 32, "contamination": "auto"},

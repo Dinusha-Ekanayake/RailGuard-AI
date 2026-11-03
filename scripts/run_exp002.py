@@ -6,6 +6,7 @@ installed, ``plots/``.
 """
 
 import argparse
+import hashlib
 import json
 import logging
 import subprocess
@@ -199,14 +200,33 @@ def _bar_charts(plt: Any, result: ExperimentResult, out_dir: Path) -> list[str]:
     return names
 
 
+def _file_sha256(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _scoring_rows(result: ExperimentResult) -> dict[str, int]:
+    """Validation and test scoring rows (after warm-up and coverage filtering)."""
+    scores = next(iter(result.scores.values()), None)
+    if scores is None:
+        return {}
+    return {str(k): int(v) for k, v in scores["split"].value_counts().sort_index().items()}
+
+
 def _run_info(
-    result: ExperimentResult, config_path: Path, sha256: str, seconds: float
+    result: ExperimentResult,
+    config_path: Path,
+    windows_path: Path,
+    sha256: str,
+    seconds: float,
 ) -> dict[str, Any]:
     with config_path.open(encoding="utf-8") as handle:
         raw_config = yaml.safe_load(handle)
     return {
         "dataset_sha256": sha256,
         "config": raw_config,
+        "failure_windows_file": windows_path.as_posix(),
+        "failure_windows_sha256": _file_sha256(windows_path),
+        "scoring_rows": _scoring_rows(result),
         "seed": result.seed,
         "features": result.features,
         "git_commit": _git_commit(),
@@ -222,7 +242,6 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument("--config", type=Path, required=True)
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--sha256", required=True, help="expected dataset SHA-256 (mandatory)")
-    parser.add_argument("--max-gap-s", type=float, default=60.0)
     args = parser.parse_args(argv)
 
     logging.basicConfig(level=logging.INFO, format="%(message)s")
@@ -234,16 +253,21 @@ def main(argv: list[str] | None = None) -> None:
     except ChecksumMismatchError as error:
         raise SystemExit(f"dataset checksum mismatch, nothing written: {error}") from error
     validate_metropt3(df)
-    df["segment_id"] = assign_segments(df["timestamp"], args.max_gap_s)
+    df["segment_id"] = assign_segments(df["timestamp"], config.max_gap_s)
     labels = assign_labels(df["timestamp"], windows, pd.Timedelta(config.horizon))
     result = run_experiment(df, labels, windows, config)
 
     args.out.mkdir(parents=True, exist_ok=True)
-    (args.out / "metrics.json").write_text(result.to_json(), encoding="utf-8")
-    info = _run_info(result, args.config, metadata.sha256, time.perf_counter() - started)
-    (args.out / "run_info.json").write_text(json.dumps(info, sort_keys=True, indent=2), "utf-8")
+    seconds = time.perf_counter() - started
+    info = _run_info(result, args.config, args.windows, metadata.sha256, seconds)
     plots = write_plots(result, args.out / "plots", windows, config)
-    (args.out / "results.md").write_text(results_table(result, plots), encoding="utf-8")
+    outputs = {
+        "metrics.json": result.to_json(),
+        "run_info.json": json.dumps(info, sort_keys=True, indent=2),
+        "results.md": results_table(result, plots),
+    }
+    for name, text in outputs.items():
+        (args.out / name).write_text(text, encoding="utf-8", newline="\n")
 
 
 if __name__ == "__main__":
