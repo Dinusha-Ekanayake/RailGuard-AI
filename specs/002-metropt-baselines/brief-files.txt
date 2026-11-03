@@ -1,0 +1,3 @@
+# Extra files shown (signatures only) in every brief of this spec.
+src/railguard/data/labels.py
+src/railguard/preprocessing/segments.py

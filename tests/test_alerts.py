@@ -65,3 +65,18 @@ def test_rejects_mismatched_segment_index() -> None:
     scores = _series([5, 5], [0, 1])
     with pytest.raises(ValueError, match="same index"):
         alert_episodes(scores, 1.0, GAP, pd.Series([0, 0]))
+
+
+def test_nan_segment_ids_raise() -> None:
+    scores = _series([5, 7], [0, 1])
+    ids = pd.Series([0.0, float("nan")], index=scores.index)
+
+    with pytest.raises(ValueError, match="NaN"):
+        alert_episodes(scores, 1.0, GAP, ids)
+
+
+def test_duplicated_score_index_raises() -> None:
+    scores = _series([5, 7], [0, 0])
+
+    with pytest.raises(ValueError, match="duplicate"):
+        alert_episodes(scores, 1.0, GAP, _segments(scores, [0, 0]))

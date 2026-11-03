@@ -45,5 +45,19 @@ uv pip install --python .venv\Scripts\python.exe -e ".[dev]"      # add ,analysi
 .venv\Scripts\python -m ruff check . ; .venv\Scripts\python -m mypy
 ```
 
+## Automated runs (`/sdd-run`)
+Claude Code can run an approved spec's tasks on its own with `/sdd-run <NNN>`; `/sdd-run plan <topic>` drafts a new spec.
+
+| Piece | What it does |
+|---|---|
+| `.claude/agents/sdd-planner.md` (Opus) | Drafts spec, plan and tasks. Never approves. |
+| `.claude/agents/sdd-implementer.md` (Sonnet) | TDD for one task group from a brief. Reused across tasks, restarted every 4. |
+| `.claude/agents/sdd-reviewer.md` | Reviews the diff against the brief. Opus for `high` risk, Sonnet for `low`. Writes one adversarial test on `high`. |
+| `.claude/agents/sdd-clerk.md` (Haiku) | DEVLOG, CHANGELOG and PR draft. |
+| `scripts/sdd/` | `python -m scripts.sdd`: `check` (lint, format, types, tests, coverage, wording), `brief`, run state and caps, hooks. |
+| `.claude/settings.json` | Stop hook (continues only while tasks are being completed), auto-format after edits, permission allowlist. Commit and push are denied. |
+
+Human gates: spec approval, `human`-risk tasks (marked `[?]` for sign-off), and every commit, push and PR. Halts: the same gate failure twice, more than 3 fix attempts, a second review round with open findings, more than 60 agent runs, or no progress between automatic continues. `SDD resume` continues after a halt. Run state lives in `.sdd/` (ignored by git).
+
 ## Token efficiency
 Use Graphify (`graphify query "..."`, `graphify-out/GRAPH_REPORT.md`) before reading files. `graphify hook install` keeps the graph current on commit and checkout.

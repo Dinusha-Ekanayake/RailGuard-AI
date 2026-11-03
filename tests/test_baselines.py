@@ -35,6 +35,8 @@ def test_outlier_scores_above_normal_rows(scorer) -> None:  # type: ignore[no-un
     # Isolation Forest scores saturate outside the training range, so compare with the
     # bulk of normal rows rather than demanding a strict maximum.
     assert scores[-1] > np.quantile(scores[:-1], 0.99)
+    if isinstance(scorer, RobustZScore):
+        assert scores[-1] > scores[:-1].max()
 
 
 def test_zscore_matches_hand_computed_value() -> None:

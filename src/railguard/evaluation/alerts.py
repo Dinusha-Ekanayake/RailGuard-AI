@@ -28,6 +28,10 @@ def alert_episodes(
     """
     if not scores.index.equals(segment_ids.index):
         raise ValueError("scores and segment_ids must share the same index")
+    if scores.index.has_duplicates:
+        raise ValueError("scores index has duplicate timestamps")
+    if segment_ids.isna().any():
+        raise ValueError("segment_ids contain NaN")
     hits = scores[scores > threshold]
     episodes: list[AlertEpisode] = []
     for _, group in hits.groupby(segment_ids.loc[hits.index], sort=True):
