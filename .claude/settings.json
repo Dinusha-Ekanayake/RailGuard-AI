@@ -29,8 +29,7 @@
     "deny": [
       "Edit(datasets/**)",
       "Write(datasets/**)",
-      "Bash(git push:*)",
-      "Bash(git commit:*)"
+      "Bash(git push:*)"
     ]
   },
   "hooks": {
