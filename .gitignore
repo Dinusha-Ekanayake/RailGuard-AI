@@ -49,3 +49,6 @@ Thumbs.db
 # Claude Code local state
 .claude/settings.local.json
 *.graphify-bak
+
+# SDD run state and briefs (local)
+.sdd/

@@ -1,23 +1,67 @@
 {
+  "permissions": {
+    "allow": [
+      "Bash(.venv/Scripts/python.exe -m scripts.sdd:*)",
+      "Bash(.venv/Scripts/python.exe -m pytest:*)",
+      "Bash(.venv/Scripts/python.exe -m ruff:*)",
+      "Bash(.venv/Scripts/python.exe -m mypy:*)",
+      "Bash(graphify query:*)",
+      "Bash(graphify explain:*)",
+      "Bash(graphify path:*)",
+      "Bash(graphify update:*)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Edit(src/**)",
+      "Edit(tests/**)",
+      "Edit(scripts/**)",
+      "Edit(configs/**)",
+      "Edit(specs/**)",
+      "Edit(docs/**)",
+      "Edit(CHANGELOG.md)",
+      "Write(src/**)",
+      "Write(tests/**)",
+      "Write(scripts/**)",
+      "Write(configs/**)",
+      "Write(docs/experiments/**)",
+      "Write(.sdd/**)"
+    ],
+    "deny": [
+      "Edit(datasets/**)",
+      "Write(datasets/**)",
+      "Bash(git push:*)"
+    ]
+  },
   "hooks": {
     "PreToolUse": [
       {
         "matcher": "Bash|Grep",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "graphify hook-guard search",
-            "timeout": 10
-          }
-        ]
+        "hooks": [{ "type": "command", "command": "graphify hook-guard search", "timeout": 10 }]
       },
       {
         "matcher": "Read|Glob",
+        "hooks": [{ "type": "command", "command": "graphify hook-guard read", "timeout": 10 }]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
         "hooks": [
           {
             "type": "command",
-            "command": "graphify hook-guard read",
-            "timeout": 10
+            "command": "cd \"$CLAUDE_PROJECT_DIR\" && .venv/Scripts/python.exe -m scripts.sdd hook-format",
+            "timeout": 60
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd \"$CLAUDE_PROJECT_DIR\" && .venv/Scripts/python.exe -m scripts.sdd hook-stop",
+            "timeout": 30
           }
         ]
       }

@@ -1,0 +1,25 @@
+# EXP-002: MetroPT-3 equipment anomaly baselines (E0 robust z-score, E1 Isolation Forest).
+# Split ranges are half-open [start, end). Timestamps are local naive time like the CSV.
+features:
+  window_sizes: ["60s", "5min", "15min", "60min"]
+  sample_interval: "10s"  # nominal MetroPT-3 spacing (ADR-0002); fixed, never inferred from data
+  stride: "60s"
+  min_coverage: 0.8
+  variants:
+    all: []
+    no_oil_level: ["Oil_level"]  # signals removed in this variant
+segmentation:
+  max_gap_s: 60  # a gap strictly longer than this starts a new segment (ADR-0002)
+split:
+  fit: ["2020-02-01", "2020-04-10"]
+  validation: ["2020-04-10", "2020-06-01"]
+  test: ["2020-06-01", "2020-09-01"]
+evaluation:
+  horizon: "24h"
+  merge_gap: "10min"
+  budget_per_24h: 1.0
+seed: 42
+isolation_forest:
+  n_estimators: 200
+  max_samples: 256
+  contamination: "auto"

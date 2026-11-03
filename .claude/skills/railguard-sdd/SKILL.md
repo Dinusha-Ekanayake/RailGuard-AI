@@ -9,10 +9,11 @@ description: Spec-driven workflow for RailGuard AI. Use when starting a new road
 1. Query Graphify for context: `graphify query "<topic>"`.
 2. Find the next number in `specs/`. Create `specs/<NNN>-<slug>/` from `specs/_template/`.
 3. Fill in `spec.md`: problem, scope and non-goals, requirements (`REQ-<NNN>-xx`), acceptance criteria, data caveats, safety boundary. **Stop and get user approval.**
-4. Write `plan.md`, then `tasks.md` (`T-<NNN>-xx`, each with its test).
+4. Write `plan.md`, then `tasks.md` (`T-<NNN>-xx`, each with its test and a Risk of `low`, `high` or `human`; see `specs/_template/tasks.md`).
 5. `git switch dev && git pull && git switch -c feature/<NNN>-<slug>`.
 
 ## Implement
+- Automated: `/sdd-run <NNN>` (see `.claude/skills/sdd-run/SKILL.md`) runs the tasks with subagents and stops at the human gates.
 - TDD per task: failing test → code → refactor. Tick the task in `tasks.md`.
 - Tests needing real datasets get `@pytest.mark.slow`. CI uses fixtures in `tests/fixtures/`.
 
