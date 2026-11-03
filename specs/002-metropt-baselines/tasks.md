@@ -19,4 +19,4 @@ TDD for every task: write the failing test, implement, refactor, then tick the b
 | T-002-13 | Slow end-to-end test on the real CSV | produces validation and test metrics for E0 and E1 in both variants | human | [x] |
 | T-002-14 | Run on the real data; commit `docs/experiments/exp002/` outputs (under 5 MB) | files present; results reported as event counts | human | [x] |
 | T-002-15 | Experiment card `docs/experiments/EXP-002-metropt-baselines.md` | review against AC-05 and REQ-002-07 wording | human | [x] |
-| T-002-16 | Close out: DEVLOG, CHANGELOG, code review, `graphify update .`, PR into dev | CI green | human | [ ] |
+| T-002-16 | Close out: DEVLOG, CHANGELOG, code review, `graphify update .`, PR into dev | CI green | human | [?] |
