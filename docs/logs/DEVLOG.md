@@ -5,7 +5,7 @@ Newest entry at the top. Each entry records what was done, the decisions made an
 ## 2026-11-03: Spec 002 implemented and EXP-002 run (MetroPT-3 baselines)
 **Done**
 - T-002-01 to T-002-12: experiment config loader, synthetic test frame, trailing window features (60 s, 5 min, 15 min, 60 min on a 60 s grid), chronological split and fit mask, E0 robust z-score, E1 Isolation Forest, alert episodes, event metrics, threshold selection, experiment runner and `scripts/run_exp002.py`.
-- Ran EXP-002 on the real CSV at commit `a16c5de` (`git_dirty: false`, 18 s). Outputs in `docs/experiments/exp002/`, card in `docs/experiments/EXP-002-metropt-baselines.md` (status: draft for sign-off).
+- Ran EXP-002 on the real CSV at commit `a16c5de`, then re-ran it at `f731072` (`git_dirty: false`, 18 s) after that commit added the segmentation gap, windows file hash and row counts to the provenance. The committed outputs are from the `f731072` run. Outputs in `docs/experiments/exp002/`, card in `docs/experiments/EXP-002-metropt-baselines.md` (status: draft for sign-off).
 - Results as event counts (2 validation events, 2 test events): E0 (`all`) detected 1 of 2 on validation and 2 of 2 on test, but its test rate of alerts outside documented windows (0.0743 per operating hour) is above the 0.0417 budget. E1 (`all`) detected 2 of 2 on both splits, within budget (0.0118 validation, 0.0058 test). E1 alerts were at or after window onset for three events. Dropping `Oil_level` left E0 unchanged and moved E1 only slightly.
 - Added SDD automation tooling: `scripts/sdd/`, `.claude/agents/`, `.claude/skills/sdd-run/`.
 

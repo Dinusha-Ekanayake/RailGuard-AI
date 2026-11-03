@@ -1,7 +1,7 @@
 # EXP-002: MetroPT-3 equipment anomaly baselines (E0, E1)
 
 - **Spec:** `specs/002-metropt-baselines/spec.md` (Approved 2026-11-02)
-- **Branch / commit:** `feature/002-metropt-baselines`, run at `a16c5de` with a clean tree (`git_dirty: false`)
+- **Branch / commit:** `feature/002-metropt-baselines`, run at `f731072` with a clean tree (`git_dirty: false`)
 - **Status:** Approved by the user (2026-11-03)
 - **Raw outputs:** `docs/experiments/exp002/` (`metrics.json`, `run_info.json`, `results.md`, `plots/`)
 
